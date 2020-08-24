@@ -1,19 +1,20 @@
+
+
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/Yasir-siddiqui/android_kernel_xiaomi_lavender -b lite kernel
+git clone --depth=1 https://github.com/KazuDante89/simple-kernel-litebased -b lite-eas kernel
 cd kernel
 git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
-git clone --depth=1 https://github.com/Yasir-siddiqui/AnyKernel3 AnyKernel
+git clone --depth=1 https://github.com/KazuDante89/AnyKernel3-EAS AnyKernel
 echo "Done"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
 export CONFIG_PATH=$PWD/arch/arm64/configs/lavender-perf_defconfig
 PATH="${PWD}/clang/bin:$PATH"
-export LD="clang/bin/ld.lld"
 export ARCH=arm64
-export KBUILD_BUILD_HOST=notkernel
-export KBUILD_BUILD_USER="Yasir"
+export KBUILD_BUILD_HOST=circleci
+export KBUILD_BUILD_USER="kazudante"
 # sticker plox
 function sticker() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -26,7 +27,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>• NotKernel •</b>%0ABuild started on <code>Circle CI/CD</code>%0AFor device <b>Xiaomi Redmi note7/7s</b> (lavender)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Test"
+        -d text="<b>• [EAS]-Simple-Kernel-litebeta •</b>%0ABuild started on <code>Circle CI</code>%0AFor device <b>Xiaomi Redmi Note7</b> (lavender)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b>#beta"
 }
 # Push kernel to channel
 function push() {
@@ -52,17 +53,17 @@ function compile() {
    make O=out ARCH=arm64 lavender-perf_defconfig
        make -j$(nproc --all) O=out \
                              ARCH=arm64 \
-			     CC=clang \
-			     LD=ld.lld \
-			     CROSS_COMPILE=aarch64-linux-gnu- \
-			     CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-   cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
+                             CC=clang \
+			                       CROSS_COMPILE=aarch64-linux-gnu- \
+			                       CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+   mv out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz
+   cp out/arch/arm64/boot/dts/qcom/sdm660-mtp_f7a.dtb AnyKernel
 }
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 NotKernel-Lite-lavender-${TANGGAL}.zip *
-    cd .. 
+    zip -r9 Simple-Kernel-litebeta-${TANGGAL}.zip *
+    cd ..
 }
 sticker
 sendinfo
