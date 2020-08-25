@@ -28,7 +28,7 @@ function sendinfo() {
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>• [EAS]-Simple-Kernel-litebeta3 •</b>%0ABuild started on <code>Circle CI</code>%0AFor device <b>Xiaomi Redmi Note7</b> (lavender)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b>#beta"
+        -d text="<b>• [EAS]-Simple-Kernel-litebeta4 •</b>%0ABuild started on <code>Circle CI</code>%0AFor device <b>Xiaomi Redmi Note7</b> (lavender)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b>#beta"
 }
 # Push kernel to channel
 function push() {
@@ -56,12 +56,13 @@ function compile() {
                              ARCH=arm64 \
 			     CROSS_COMPILE=aarch64-linux-android- \
 			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
-   cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
+   cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz
+   cp out/arch/arm64/boot/dts/qcom/sdm660-mtp_f7a.dtb AnyKernel/kernel
 }
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Simple-Kernel-litebeta3-${TANGGAL}.zip *
+    zip -r9 Simple-Kernel-litebeta4-${TANGGAL}.zip *
     cd ..
 }
 sticker
