@@ -52,10 +52,9 @@ function compile() {
        make -j$(nproc --all) O=out \
                              ARCH=arm64 \
                              CC=clang \
-			                       CROSS_COMPILE=aarch64-linux-gnu- \
-			                       CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-   mv out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz
-   cp out/arch/arm64/boot/dts/qcom/sdm660-mtp_f7a.dtb AnyKernel
+			     CROSS_COMPILE=aarch64-linux-gnu- \
+			     CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+   cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
 # Zipping
 function zipping() {
