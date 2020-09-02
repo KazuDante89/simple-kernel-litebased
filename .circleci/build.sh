@@ -56,8 +56,8 @@ function compile() {
                              ARCH=arm64 \
 			     CROSS_COMPILE=aarch64-linux-android- \
 			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
-   cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz
-   cp out/arch/arm64/boot/dts/qcom/sdm660-mtp_f7a.dtb AnyKernel/kernel
+   mv out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz
+   cp out/arch/arm64/boot/dts/qcom/sdm660-mtp_f7a.dtb AnyKernel
 }
 # Zipping
 function zipping() {
