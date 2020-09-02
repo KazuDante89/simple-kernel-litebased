@@ -62,7 +62,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 Simple-Kernel-litebeta5-${TANGGAL}.zip *
+    zip -r9 Simple-Kernel-litebased.zip *
     cd ..
 }
 sticker
